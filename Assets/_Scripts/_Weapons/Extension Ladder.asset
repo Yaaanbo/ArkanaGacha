@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802a44848af52b24d96b15decc9ec1e0, type: 3}
+  m_Name: Extension Ladder
+  m_EditorClassIdentifier: 
+  weaponName: Extension Ladder
+  weaponSprite: {fileID: 21300000, guid: 5da0e1bbb4996d843ab2b767367d5347, type: 3}
+  weaponBackground: {fileID: 0}
+  weaponDesc: The only extension ladder in the world that can be used as a weapon
+  baseAttack: 200
+  attackSpeed: 20
+  specialEffectDesc: 'AOE weapon.
+
+    Put the ladder down and let it extends itself,
+    when the ladder touches the ground it''ll create an AOE attack within 3 meters.
+    Damage dealt will be divided according to enemy amount within the area.'
+  rarity: 50

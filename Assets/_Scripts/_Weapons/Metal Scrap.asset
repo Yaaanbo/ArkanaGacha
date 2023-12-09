@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802a44848af52b24d96b15decc9ec1e0, type: 3}
+  m_Name: Metal Scrap
+  m_EditorClassIdentifier: 
+  weaponName: Metal Scrap
+  weaponSprite: {fileID: 21300000, guid: be70b4eff5e9716428a7bb9da23c72e8, type: 3}
+  weaponBackground: {fileID: 0}
+  weaponDesc: Short range weapon that can also be used as a shield
+  baseAttack: 100
+  attackSpeed: 35
+  specialEffectDesc: 'Single target weapon.
+
+    Throw the weapon and it will comes
+    back. Be careful when you throw it, cause you''re vulnerable.'
+  rarity: 100

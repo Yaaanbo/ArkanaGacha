@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802a44848af52b24d96b15decc9ec1e0, type: 3}
+  m_Name: Shovel
+  m_EditorClassIdentifier: 
+  weaponName: Shovel
+  weaponSprite: {fileID: 21300000, guid: 1ac074fca5c06a84d8fcecaebba4f148, type: 3}
+  weaponBackground: {fileID: 0}
+  weaponDesc: Dig your enemy's grave!
+  baseAttack: 250
+  attackSpeed: 50
+  specialEffectDesc: 'Single target weapon.
+
+    The lightest melee weapon with the
+    fastest attack speed with less damage than other melee.'
+  rarity: 50
