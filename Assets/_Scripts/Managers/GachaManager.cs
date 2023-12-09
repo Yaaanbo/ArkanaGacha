@@ -35,7 +35,7 @@ public class GachaManager : MonoBehaviour
         Debug.Log("Playing animtion for " + animTime + " seconds");
 
         //Randomize Dropped Character
-        droppedChara = GetOneCharacterPull();
+        droppedChara = GetOneCharacter();
 
         //Wait for second till animation finished then fire and event to update UI according to the dropped character
         StartCoroutine(DisplayUICoroutine(true));
@@ -49,7 +49,7 @@ public class GachaManager : MonoBehaviour
         Debug.Log("Playing animtion for " + animTime + " seconds");
 
         //Randomize Dropped Weapon
-        droppedWeap = GetOneWeaponPull();
+        droppedWeap = GetOneWeapon();
 
         //Wait for second till animation finished then fire and event to update UI according to the dropped weapon
         StartCoroutine(DisplayUICoroutine(false));
@@ -86,7 +86,9 @@ public class GachaManager : MonoBehaviour
     #endregion
 
     #region Randomizing Drops
-    public CharacterScriptable GetOneCharacterPull()
+
+    //Get One Character
+    private CharacterScriptable GetOneCharacter()
     {
         randomNum = UnityEngine.Random.Range(0f, 100f);
         List<CharacterScriptable> possibleCharactersDrop = new List<CharacterScriptable>();
@@ -103,7 +105,29 @@ public class GachaManager : MonoBehaviour
         return droppedCharacter;
     }
 
-    public WeaponScriptable GetOneWeaponPull()
+    //Get 10 Characters
+    private List<CharacterScriptable> GetTenCharacters()
+    {
+        randomNum = UnityEngine.Random.Range(0f, 100f);
+        List<CharacterScriptable> charactersDropped = new List<CharacterScriptable>();
+
+        int pullAmount = 10;
+        for (int i = 0; i < pullAmount; i++)
+        {
+            for (int j = 0; j < possibleCharacters.Length; j++)
+            {
+                if (randomNum <= possibleCharacters[i].rarity)
+                {
+                    charactersDropped.Add(possibleCharacters[i]);
+                }
+            }
+        }
+
+        return charactersDropped;
+    }
+
+    //Get One Weapon
+    private WeaponScriptable GetOneWeapon()
     {
         randomNum = UnityEngine.Random.Range(0f, 100f);
         List<WeaponScriptable> possibleWeaponDrops = new List<WeaponScriptable>();
@@ -118,6 +142,27 @@ public class GachaManager : MonoBehaviour
 
         WeaponScriptable droppedWeapon = possibleWeaponDrops[UnityEngine.Random.Range(0, possibleWeaponDrops.Count)];
         return droppedWeapon;
+    }
+
+    //Get 10 Weapons
+    private List<WeaponScriptable> GetTenWeapons()
+    {
+        randomNum = UnityEngine.Random.Range(0f, 100f);
+        List<WeaponScriptable> weaponsDropped = new List<WeaponScriptable>();
+
+        int pullAmount = 10;
+        for (int i = 0; i < pullAmount; i++)
+        {
+            for (int j = 0; j < possibleWeapons.Length; j++)
+            {
+                if (randomNum <= possibleWeapons[i].rarity)
+                {
+                    weaponsDropped.Add(possibleWeapons[i]);
+                }
+            }
+        }
+
+        return weaponsDropped;
     }
     #endregion
 }

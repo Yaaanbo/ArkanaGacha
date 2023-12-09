@@ -7,6 +7,8 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveManager instance;
 
+    public readonly string fileName = "/Item Data.json";
+
     [Header("Class References")]
     [SerializeField] private Inventory inventory;
 
@@ -29,14 +31,14 @@ public class SaveManager : MonoBehaviour
 
         string dataToSave = JsonUtility.ToJson(itemData);
 
-        if(File.Exists(Application.persistentDataPath + "Item Data.json"))
+        if(File.Exists(Application.persistentDataPath + fileName))
         {
 
-            File.WriteAllText(Application.dataPath + "Item Data.json", dataToSave);
+            File.WriteAllText(Application.persistentDataPath + fileName, dataToSave);
         }
         else
         {
-            File.WriteAllText(Application.dataPath + "Item Data.json", dataToSave);
+            File.WriteAllText(Application.persistentDataPath + fileName, dataToSave);
         }
 
         Debug.Log(Application.persistentDataPath);
@@ -44,7 +46,7 @@ public class SaveManager : MonoBehaviour
 
     public List<CharacterScriptable> LoadCharacters()
     {
-        string loadData = File.ReadAllText(Application.dataPath + "Item Data.json");
+        string loadData = File.ReadAllText(Application.persistentDataPath + fileName);
         var data = JsonUtility.FromJson<ItemData>(loadData);
 
         return data.characterList;
@@ -52,7 +54,7 @@ public class SaveManager : MonoBehaviour
 
     public List<WeaponScriptable> LoadWeapons()
     {
-        string loadData = File.ReadAllText(Application.dataPath + "Item Data.json");
+        string loadData = File.ReadAllText(Application.persistentDataPath + fileName);
         var data = JsonUtility.FromJson<ItemData>(loadData);
 
         return data.weaponList;

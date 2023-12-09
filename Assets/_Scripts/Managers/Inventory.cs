@@ -50,7 +50,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        if (!File.Exists(Application.persistentDataPath + "Item Data.json")) return;
+        if (!File.Exists(Application.persistentDataPath + SaveManager.instance.fileName)) return;
 
         unlockedCharacters = SaveManager.instance.LoadCharacters();
         unlockedWeapons = SaveManager.instance.LoadWeapons();
