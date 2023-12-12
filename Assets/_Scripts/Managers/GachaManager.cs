@@ -23,18 +23,25 @@ public class GachaManager : MonoBehaviour
     private WeaponScriptable droppedWeap;
 
     [Header("Events")]
-    public Action<CharacterScriptable> OnCharacterDropped; //Adding characters to inventory
-    public Action<WeaponScriptable> OnWeaponsDropped; //Adding weapons to inventory
+    public Action<CharacterScriptable> OnSingleCharacterDropped; //Adding single characters to inventory then activate result screen
+    public Action<WeaponScriptable> OnSingleWeaponsDropped; //Adding single weapons to inventory then activate result screen
+    public Action<List<CharacterScriptable>> On10CharactersDropped; //Adding 10 characters to inventory then activate result screen
+    public Action<List<WeaponScriptable>> On10WeaponsDropped; //Adding 10 weapons to inventory then activate result screen
     public Action OnGachaAnimStart; //Activate Gacha Animation UI
     public Action OnGachaAnimEnd; //Deactive Gacha Animation UI
 
     #region Rolling Drops
-    public void RollOnce(bool _isRollingChara)
+    private void OngachaButtonPressed()
     {
         //Play some cool animation
         OnGachaAnimStart?.Invoke();
         videoPlayerObj.SetActive(true);
         Debug.Log("Playing animtion for " + animTime + " seconds");
+    }
+
+    public void RollOnce(bool _isRollingChara)
+    {
+        OngachaButtonPressed();
 
         if (_isRollingChara)
         {
@@ -42,7 +49,7 @@ public class GachaManager : MonoBehaviour
             droppedChara = GetOneCharacter();
 
             //Wait for second till animation finished then fire and event to update UI according to the dropped character
-            StartCoroutine(RollOnceCoroutine(true));
+            StartCoroutine(RollsCoroutine(_isRollingChara, true));
         }
         else
         {
@@ -50,48 +57,58 @@ public class GachaManager : MonoBehaviour
             droppedWeap = GetOneWeapon();
 
             //Wait for second till animation finished then fire and event to update UI according to the dropped weapon
-            StartCoroutine(RollOnceCoroutine(false));
+            StartCoroutine(RollsCoroutine(_isRollingChara, true));
         }
-        
+
     }
 
     public void Roll10Times(bool _isRollingChara)
     {
+        OngachaButtonPressed();
+
         if (_isRollingChara)
         {
             //Randomize 10 Dropped Characters
             dropped10Chara = GetTenCharacters();
+
+            //Wait for second till animation finished then fire and event to update UI according to the dropped character
+            StartCoroutine(RollsCoroutine(_isRollingChara, false));
         }
         else
         {
             //Randomize 10 Dropped Weapons
             dropped10Weap = GetTenWeapons();
+
+            //Wait for second till animation finished then fire and event to update UI according to the dropped character
+            StartCoroutine(RollsCoroutine(_isRollingChara, false));
         }
     }
 
-    private IEnumerator RollOnceCoroutine(bool _isRollingChara)
+    private IEnumerator RollsCoroutine(bool _isRollingChara, bool _isRollingOnce)
     {
         yield return new WaitForSeconds(animTime);
 
+        //Deactive Animation Object
+        OnGachaAnimEnd?.Invoke();
+        videoPlayerObj.SetActive(false);
+
         if (_isRollingChara)
         {
-            //Deactive Animation Object
-            OnGachaAnimEnd?.Invoke();
-            videoPlayerObj.SetActive(false);
-            Debug.Log("You get : " + droppedChara.characterName);
-
-            //Display UI and Add characters to inventory list
-            OnCharacterDropped?.Invoke(droppedChara);
+            if (_isRollingOnce)
+                //Display UI and Add characters to inventory list
+                OnSingleCharacterDropped?.Invoke(droppedChara);
+            else
+                //Display UI and Add characters to inventory list
+                On10CharactersDropped?.Invoke(dropped10Chara);
         }
         else
         {
-            //Deactive Animation Object
-            OnGachaAnimEnd?.Invoke();
-            videoPlayerObj.SetActive(false);
-            Debug.Log("You get : " + droppedWeap.weaponName);
-
-            //Display UI and Add weapon to inventory list
-            OnWeaponsDropped?.Invoke(droppedWeap);
+            if (_isRollingOnce)
+                //Display UI and Add weapon to inventory list
+                OnSingleWeaponsDropped?.Invoke(droppedWeap);
+            else
+                //Display UI and Add weapons to inventory list
+                On10WeaponsDropped?.Invoke(dropped10Weap);
         }
 
         //Save game
@@ -128,7 +145,7 @@ public class GachaManager : MonoBehaviour
         for (int i = 0; i < pullAmount; i++)
         {
             charactersDropped.Add(GetOneCharacter());
-            Debug.Log(charactersDropped[i]); 
+            Debug.Log(charactersDropped[i]);
         }
 
         return charactersDropped;
@@ -156,7 +173,7 @@ public class GachaManager : MonoBehaviour
     private List<WeaponScriptable> GetTenWeapons()
     {
         List<WeaponScriptable> weaponsDropped = new List<WeaponScriptable>();
-        
+
         int pullAmount = 10;
         for (int i = 0; i < pullAmount; i++)
         {

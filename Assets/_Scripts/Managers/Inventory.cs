@@ -26,25 +26,63 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
-        gachaManager.OnCharacterDropped += (CharacterScriptable _charaToAdd) =>
+        //Adding single dropped item
+        gachaManager.OnSingleCharacterDropped += (CharacterScriptable _charaToAdd) =>
         {
             unlockedCharacters.Add(_charaToAdd);
         };
-        gachaManager.OnWeaponsDropped += (WeaponScriptable _weapToAdd) =>
+        gachaManager.OnSingleWeaponsDropped += (WeaponScriptable _weapToAdd) =>
         {
             unlockedWeapons.Add(_weapToAdd);
+        };
+
+        //Adding multiple dropped items
+        gachaManager.On10CharactersDropped += (List<CharacterScriptable> _charaToAdd) =>
+        {
+            int pullAmount = 10;
+            for (int i = 0; i < pullAmount; i++)
+            {
+                unlockedCharacters.Add(_charaToAdd[i]);
+            }
+        };
+        gachaManager.On10WeaponsDropped += (List<WeaponScriptable> _weapToAdd) =>
+        {
+            int pullAmount = 10;
+            for (int i = 0; i < pullAmount; i++)
+            {
+                unlockedWeapons.Add(_weapToAdd[i]);
+            }
         };
     }
 
     private void OnDisable()
     {
-        gachaManager.OnCharacterDropped -= (CharacterScriptable _charaToAdd) =>
+        //Adding single dropped item
+        gachaManager.OnSingleCharacterDropped -= (CharacterScriptable _charaToAdd) =>
         {
             unlockedCharacters.Add(_charaToAdd);
         };
-        gachaManager.OnWeaponsDropped -= (WeaponScriptable _weapToAdd) =>
+        gachaManager.OnSingleWeaponsDropped -= (WeaponScriptable _weapToAdd) =>
         {
             unlockedWeapons.Add(_weapToAdd);
+        };
+
+        //Adding multiple dropped items
+        gachaManager.On10CharactersDropped += (List<CharacterScriptable> _charaToAdd) =>
+        {
+            int pullAmount = 10;
+            for (int i = 0; i < pullAmount; i++)
+            {
+                unlockedCharacters.Add(_charaToAdd[i]);
+            }
+        };
+        gachaManager.On10WeaponsDropped += (List<WeaponScriptable> _weapToAdd) =>
+        {
+            int pullAmount = 10;
+            for (int i = 0; i < pullAmount; i++)
+            {
+                unlockedWeapons.Add(_weapToAdd[i]);
+            }
         };
     }
 
@@ -52,6 +90,11 @@ public class Inventory : MonoBehaviour
     {
         if (!File.Exists(Application.persistentDataPath + SaveManager.instance.fileName)) return;
 
+        //Clear Lists
+        unlockedCharacters.Clear();
+        unlockedWeapons.Clear();
+
+        //Assign Saved Data To Lists
         unlockedCharacters = SaveManager.instance.LoadCharacters();
         unlockedWeapons = SaveManager.instance.LoadWeapons();
     }

@@ -14,7 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gachaAnimationObj;
 
     [Header("Gacha Result Screen Components")]
-    [SerializeField] private GameObject gachaResultParent;
+    [SerializeField] private GameObject singleGachaResultParent;
+    [SerializeField] private GameObject tenGachaResultParent;
+    [SerializeField] private Transform[] tenGachaContent;
     [SerializeField] private Image itemImage;
     [SerializeField] private Image itemBackground;
     [SerializeField] private TMP_Text itemName;
@@ -23,7 +25,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject ItemDetailParent;
     [SerializeField] private Image itemDetailImage;
     [SerializeField] private TMP_Text itemDetailNameText;
-
 
     [Header("Characters Details Menu")]
     [SerializeField] private GameObject charaDetailsParent;
@@ -44,18 +45,46 @@ public class UIManager : MonoBehaviour
         gachaManager.OnGachaAnimStart += () => { gachaAnimationObj.SetActive(true); };
         gachaManager.OnGachaAnimEnd += () => { gachaAnimationObj.SetActive(false); };
 
-        //Displaying Gacha Result
-        gachaManager.OnCharacterDropped += (CharacterScriptable _chara) =>
+        //Displaying Single Gacha Result
+        gachaManager.OnSingleCharacterDropped += (CharacterScriptable _chara) =>
         {
-            gachaResultParent.SetActive(true);
+            singleGachaResultParent.SetActive(true);
             itemImage.sprite = _chara.characterSprite;
             itemName.text = _chara.characterName;
         };
-        gachaManager.OnWeaponsDropped += (WeaponScriptable _weap) =>
+        gachaManager.OnSingleWeaponsDropped += (WeaponScriptable _weap) =>
         {
-            gachaResultParent.SetActive(true);
+            singleGachaResultParent.SetActive(true);
             itemImage.sprite = _weap.weaponSprite;
             itemName.text = _weap.weaponName;
+        };
+
+        //Displaying 10 Gacha Result
+        gachaManager.On10CharactersDropped += (List<CharacterScriptable> _charas) =>
+        {
+            tenGachaResultParent.SetActive(true);
+
+            for (int i = 0; i < tenGachaContent.Length; i++)
+            {
+                Image itemImage = tenGachaContent[i].transform.Find("ItemImage").GetComponent<Image>();
+                TextMeshProUGUI itemName = tenGachaContent[i].transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+
+                itemImage.sprite = _charas[i].characterSprite;
+                itemName.text = _charas[i].characterName;
+            }
+        };
+        gachaManager.On10WeaponsDropped += (List<WeaponScriptable> _weaps) =>
+        {
+            tenGachaResultParent.SetActive(true);
+
+            for (int i = 0; i < tenGachaContent.Length; i++)
+            {
+                Image itemImage = tenGachaContent[i].transform.Find("ItemImage").GetComponent<Image>();
+                TextMeshProUGUI itemName = tenGachaContent[i].transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+
+                itemImage.sprite = _weaps[i].weaponSprite;
+                itemName.text = _weaps[i].weaponName;
+            }
         };
 
         //Displaying Character Details
@@ -92,7 +121,6 @@ public class UIManager : MonoBehaviour
             weapAtkSpeedText.text = "ATK Speed : " + _weap.attackSpeed.ToString();
             weapSpecialEffectDescText.text = _weap.specialEffectDesc;
         };
-
     }
 
     private void OnDisable()
@@ -101,18 +129,46 @@ public class UIManager : MonoBehaviour
         gachaManager.OnGachaAnimStart -= () => { gachaAnimationObj.SetActive(true); };
         gachaManager.OnGachaAnimEnd -= () => { gachaAnimationObj.SetActive(false); };
 
-        //Displaying Gacha Result
-        gachaManager.OnCharacterDropped -= (CharacterScriptable _chara) =>
+        //Displaying Single Gacha Result
+        gachaManager.OnSingleCharacterDropped -= (CharacterScriptable _chara) =>
         {
-            gachaResultParent.SetActive(true);
+            singleGachaResultParent.SetActive(true);
             itemImage.sprite = _chara.characterSprite;
             itemName.text = _chara.characterName;
         };
-        gachaManager.OnWeaponsDropped -= (WeaponScriptable _weap) =>
+        gachaManager.OnSingleWeaponsDropped -= (WeaponScriptable _weap) =>
         {
-            gachaResultParent.SetActive(true);
+            singleGachaResultParent.SetActive(true);
             itemImage.sprite = _weap.weaponSprite;
             itemName.text = _weap.weaponName;
+        };
+
+        //Displaying 10 Gacha Result
+        gachaManager.On10CharactersDropped += (List<CharacterScriptable> _charas) =>
+        {
+            tenGachaResultParent.SetActive(true);
+
+            for (int i = 0; i < tenGachaContent.Length; i++)
+            {
+                Image itemImage = tenGachaContent[i].transform.Find("ItemImage").GetComponent<Image>();
+                TextMeshProUGUI itemName = tenGachaContent[i].transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+
+                itemImage.sprite = _charas[i].characterSprite;
+                itemName.text = _charas[i].characterName;
+            }
+        };
+        gachaManager.On10WeaponsDropped += (List<WeaponScriptable> _weaps) =>
+        {
+            tenGachaResultParent.SetActive(true);
+
+            for (int i = 0; i < tenGachaContent.Length; i++)
+            {
+                Image itemImage = tenGachaContent[i].transform.Find("ItemImage").GetComponent<Image>();
+                TextMeshProUGUI itemName = tenGachaContent[i].transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+
+                itemImage.sprite = _weaps[i].weaponSprite;
+                itemName.text = _weaps[i].weaponName;
+            }
         };
 
         //Displaying Character Details

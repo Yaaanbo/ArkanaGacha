@@ -31,15 +31,7 @@ public class SaveManager : MonoBehaviour
 
         string dataToSave = JsonUtility.ToJson(itemData);
 
-        if(File.Exists(Application.persistentDataPath + fileName))
-        {
-
-            File.WriteAllText(Application.persistentDataPath + fileName, dataToSave);
-        }
-        else
-        {
-            File.WriteAllText(Application.persistentDataPath + fileName, dataToSave);
-        }
+        File.WriteAllText(Application.persistentDataPath + fileName, dataToSave);
 
         Debug.Log(Application.persistentDataPath);
     }
