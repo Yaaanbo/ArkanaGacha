@@ -18,6 +18,8 @@ public class GachaManager : MonoBehaviour
 
     [Header("Dropped Items")]
     private CharacterScriptable droppedChara;
+    private List<CharacterScriptable> dropped10Chara = new List<CharacterScriptable>();
+    private List<WeaponScriptable> dropped10Weap = new List<WeaponScriptable>();
     private WeaponScriptable droppedWeap;
 
     [Header("Events")]
@@ -27,35 +29,47 @@ public class GachaManager : MonoBehaviour
     public Action OnGachaAnimEnd; //Deactive Gacha Animation UI
 
     #region Rolling Drops
-    public void RollCharacterOnce()
+    public void RollOnce(bool _isRollingChara)
     {
         //Play some cool animation
         OnGachaAnimStart?.Invoke();
         videoPlayerObj.SetActive(true);
         Debug.Log("Playing animtion for " + animTime + " seconds");
 
-        //Randomize Dropped Character
-        droppedChara = GetOneCharacter();
+        if (_isRollingChara)
+        {
+            //Randomize Dropped Character
+            droppedChara = GetOneCharacter();
 
-        //Wait for second till animation finished then fire and event to update UI according to the dropped character
-        StartCoroutine(DisplayUICoroutine(true));
+            //Wait for second till animation finished then fire and event to update UI according to the dropped character
+            StartCoroutine(RollOnceCoroutine(true));
+        }
+        else
+        {
+            //Randomize Dropped Weapon
+            droppedWeap = GetOneWeapon();
+
+            //Wait for second till animation finished then fire and event to update UI according to the dropped weapon
+            StartCoroutine(RollOnceCoroutine(false));
+        }
+        
     }
 
-    public void RollWeaponOnce()
+    public void Roll10Times(bool _isRollingChara)
     {
-        //Play some cool animation
-        OnGachaAnimStart?.Invoke();
-        videoPlayerObj.SetActive(true);
-        Debug.Log("Playing animtion for " + animTime + " seconds");
-
-        //Randomize Dropped Weapon
-        droppedWeap = GetOneWeapon();
-
-        //Wait for second till animation finished then fire and event to update UI according to the dropped weapon
-        StartCoroutine(DisplayUICoroutine(false));
+        if (_isRollingChara)
+        {
+            //Randomize 10 Dropped Characters
+            dropped10Chara = GetTenCharacters();
+        }
+        else
+        {
+            //Randomize 10 Dropped Weapons
+            dropped10Weap = GetTenWeapons();
+        }
     }
 
-    private IEnumerator DisplayUICoroutine(bool _isRollingChara)
+    private IEnumerator RollOnceCoroutine(bool _isRollingChara)
     {
         yield return new WaitForSeconds(animTime);
 
@@ -76,7 +90,7 @@ public class GachaManager : MonoBehaviour
             videoPlayerObj.SetActive(false);
             Debug.Log("You get : " + droppedWeap.weaponName);
 
-            //Display UI and Add characters to inventory list
+            //Display UI and Add weapon to inventory list
             OnWeaponsDropped?.Invoke(droppedWeap);
         }
 
@@ -108,19 +122,13 @@ public class GachaManager : MonoBehaviour
     //Get 10 Characters
     private List<CharacterScriptable> GetTenCharacters()
     {
-        randomNum = UnityEngine.Random.Range(0f, 100f);
         List<CharacterScriptable> charactersDropped = new List<CharacterScriptable>();
 
         int pullAmount = 10;
         for (int i = 0; i < pullAmount; i++)
         {
-            for (int j = 0; j < possibleCharacters.Length; j++)
-            {
-                if (randomNum <= possibleCharacters[i].rarity)
-                {
-                    charactersDropped.Add(possibleCharacters[i]);
-                }
-            }
+            charactersDropped.Add(GetOneCharacter());
+            Debug.Log(charactersDropped[i]); 
         }
 
         return charactersDropped;
@@ -147,19 +155,13 @@ public class GachaManager : MonoBehaviour
     //Get 10 Weapons
     private List<WeaponScriptable> GetTenWeapons()
     {
-        randomNum = UnityEngine.Random.Range(0f, 100f);
         List<WeaponScriptable> weaponsDropped = new List<WeaponScriptable>();
-
+        
         int pullAmount = 10;
         for (int i = 0; i < pullAmount; i++)
         {
-            for (int j = 0; j < possibleWeapons.Length; j++)
-            {
-                if (randomNum <= possibleWeapons[i].rarity)
-                {
-                    weaponsDropped.Add(possibleWeapons[i]);
-                }
-            }
+            weaponsDropped.Add(GetOneWeapon());
+            Debug.Log(weaponsDropped[i]);
         }
 
         return weaponsDropped;

@@ -38,11 +38,11 @@ public class Inventory : MonoBehaviour
 
     private void OnDisable()
     {
-        gachaManager.OnCharacterDropped += (CharacterScriptable _charaToAdd) =>
+        gachaManager.OnCharacterDropped -= (CharacterScriptable _charaToAdd) =>
         {
             unlockedCharacters.Add(_charaToAdd);
         };
-        gachaManager.OnWeaponsDropped += (WeaponScriptable _weapToAdd) =>
+        gachaManager.OnWeaponsDropped -= (WeaponScriptable _weapToAdd) =>
         {
             unlockedWeapons.Add(_weapToAdd);
         };
