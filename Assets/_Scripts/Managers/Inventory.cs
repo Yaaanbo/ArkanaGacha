@@ -110,9 +110,11 @@ public class Inventory : MonoBehaviour
         {
             foreach (CharacterScriptable chara in unlockedCharacters)
             {
+                if (unlockedCharacters.Count == 0) return;
+
                 GameObject charaInvGO = Instantiate(itemContent, itemContentParent);
-                Image charaImg = charaInvGO.transform.Find("ItemImage").GetComponent<Image>();
-                TextMeshProUGUI charaName = charaInvGO.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+                Image charaImg = charaInvGO.transform.GetChild(0).GetComponent<Image>();
+                TextMeshProUGUI charaName = charaInvGO.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
                 
                 charaImg.sprite = chara.characterSprite;
                 charaName.text = chara.characterName;
@@ -122,11 +124,13 @@ public class Inventory : MonoBehaviour
         }
         else
         {
+            if (unlockedWeapons.Count == 0) return;
+
             foreach (WeaponScriptable weap in unlockedWeapons)
             {
                 GameObject weapInvGO = Instantiate(itemContent, itemContentParent);
-                Image weapImg = weapInvGO.transform.Find("ItemImage").GetComponent<Image>();
-                TextMeshProUGUI weapName = weapInvGO.transform.Find("ItemName").GetComponent<TextMeshProUGUI>();
+                Image weapImg = weapInvGO.transform.GetChild(0).GetComponent<Image>();
+                TextMeshProUGUI weapName = weapInvGO.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
                 weapImg.sprite = weap.weaponSprite;
                 weapName.text = weap.weaponName;

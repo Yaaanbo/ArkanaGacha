@@ -17,7 +17,6 @@ public class SaveManager : MonoBehaviour
         if(instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);
         }
         else
         {
@@ -29,7 +28,7 @@ public class SaveManager : MonoBehaviour
     {
         ItemData itemData = new ItemData(inventory.UnlockedCharacters, inventory.UnlockedWeapons);
 
-        string dataToSave = JsonUtility.ToJson(itemData);
+        string dataToSave = JsonUtility.ToJson(itemData, true);
 
         File.WriteAllText(Application.persistentDataPath + fileName, dataToSave);
 

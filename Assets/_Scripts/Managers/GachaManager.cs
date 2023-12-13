@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.Video;
 
 public class GachaManager : MonoBehaviour
 {
@@ -16,11 +15,17 @@ public class GachaManager : MonoBehaviour
     [SerializeField] private CharacterScriptable[] possibleCharacters;
     [SerializeField] private WeaponScriptable[] possibleWeapons;
 
+    [SerializeField] private CharacterScriptable ssrChara;
+    [SerializeField] private WeaponScriptable ssrWeap;
+    [SerializeField] private int hardPity = 90;
+    private int charaPity = 0;
+    private int weapPity = 0;
+
     [Header("Dropped Items")]
     private CharacterScriptable droppedChara;
+    private WeaponScriptable droppedWeap;
     private List<CharacterScriptable> dropped10Chara = new List<CharacterScriptable>();
     private List<WeaponScriptable> dropped10Weap = new List<WeaponScriptable>();
-    private WeaponScriptable droppedWeap;
 
     [Header("Events")]
     public Action<CharacterScriptable> OnSingleCharacterDropped; //Adding single characters to inventory then activate result screen
@@ -45,7 +50,7 @@ public class GachaManager : MonoBehaviour
 
         if (_isRollingChara)
         {
-            //Randomize Dropped Character
+            //Random Character With Pity
             droppedChara = GetOneCharacter();
 
             //Wait for second till animation finished then fire and event to update UI according to the dropped character
@@ -53,7 +58,7 @@ public class GachaManager : MonoBehaviour
         }
         else
         {
-            //Randomize Dropped Weapon
+            //Randomize Weapon Drop
             droppedWeap = GetOneWeapon();
 
             //Wait for second till animation finished then fire and event to update UI according to the dropped weapon
@@ -94,20 +99,18 @@ public class GachaManager : MonoBehaviour
 
         if (_isRollingChara)
         {
+            //Display UI and Add characters to inventory list
             if (_isRollingOnce)
-                //Display UI and Add characters to inventory list
                 OnSingleCharacterDropped?.Invoke(droppedChara);
             else
-                //Display UI and Add characters to inventory list
                 On10CharactersDropped?.Invoke(dropped10Chara);
         }
         else
         {
+            //Display UI and Add weapon to inventory list
             if (_isRollingOnce)
-                //Display UI and Add weapon to inventory list
                 OnSingleWeaponsDropped?.Invoke(droppedWeap);
             else
-                //Display UI and Add weapons to inventory list
                 On10WeaponsDropped?.Invoke(dropped10Weap);
         }
 
@@ -133,6 +136,7 @@ public class GachaManager : MonoBehaviour
         }
 
         CharacterScriptable droppedCharacter = possibleCharactersDrop[UnityEngine.Random.Range(0, possibleCharactersDrop.Count)];
+
         return droppedCharacter;
     }
 
@@ -165,8 +169,9 @@ public class GachaManager : MonoBehaviour
             }
         }
 
-        WeaponScriptable droppedWeapon = possibleWeaponDrops[UnityEngine.Random.Range(0, possibleWeaponDrops.Count)];
-        return droppedWeapon;
+        WeaponScriptable droppedWeap = possibleWeaponDrops[UnityEngine.Random.Range(0, possibleWeaponDrops.Count)];
+
+        return droppedWeap;
     }
 
     //Get 10 Weapons
